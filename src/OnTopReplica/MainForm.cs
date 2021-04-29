@@ -121,9 +121,7 @@ namespace OnTopReplica {
             base.OnActivated(e);
 
             //Deactivate click-through if form is reactivated
-            if (ClickThroughEnabled) {
-                ClickThroughEnabled = false;
-            }
+            ClickThroughEnabled = false;
 
             Program.Platform.RestoreForm(this);
         }
@@ -131,9 +129,12 @@ namespace OnTopReplica {
         protected override void OnDeactivate(EventArgs e) {
             base.OnDeactivate(e);
 
+            //Click through if replica doesn't have focus
+            ClickThroughEnabled = true;
+
             //HACK: sometimes, even if TopMost is true, the window loses its "always on top" status.
             //  This is a fix attempt that probably won't work...
-            if (!FullscreenManager.IsFullscreen) { //fullscreen mode doesn't use TopMost
+            if(!FullscreenManager.IsFullscreen) { //fullscreen mode doesn't use TopMost
                 TopMost = false;
                 TopMost = true;
             }
